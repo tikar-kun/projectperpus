@@ -10,11 +10,15 @@ public class TransaksiDto {
     private String namaPengguna;
     private String peranPengguna;
     private String alamatPengguna;
-    private String kodeBuku;
-    private String judulBuku;
-    private String penulisBuku;
-    private String penerbitBuku;
-    private int stokBuku;
+    private String kodeTransbuku;
+
+    public String getKodeTransbuku() {
+        return kodeTransbuku;
+    }
+
+    public void setKodeTransbuku(String kodeTransbuku) {
+        this.kodeTransbuku = kodeTransbuku;
+    }
 
     public String getKode() {
         return kode;
@@ -72,43 +76,5 @@ public class TransaksiDto {
         this.alamatPengguna = alamatPengguna;
     }
 
-    public String getKodeBuku() {
-        return kodeBuku;
-    }
 
-    public void setKodeBuku(String kodeBuku) {
-        this.kodeBuku = kodeBuku;
-    }
-
-    public String getJudulBuku() {
-        return judulBuku;
-    }
-
-    public void setJudulBuku(String judulBuku) {
-        this.judulBuku = judulBuku;
-    }
-
-    public String getPenulisBuku() {
-        return penulisBuku;
-    }
-
-    public void setPenulisBuku(String penulisBuku) {
-        this.penulisBuku = penulisBuku;
-    }
-
-    public String getPenerbitBuku() {
-        return penerbitBuku;
-    }
-
-    public void setPenerbitBuku(String penerbitBuku) {
-        this.penerbitBuku = penerbitBuku;
-    }
-
-    public int getStokBuku() {
-        return stokBuku;
-    }
-
-    public void setStokBuku(int stokBuku) {
-        this.stokBuku = stokBuku;
-    }
 }

@@ -1,9 +1,6 @@
 package com.model.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "t_buku")
@@ -23,6 +20,18 @@ public class Buku {
 
     @Column(name = "stok")
     private int stok;
+
+    @ManyToOne
+    @JoinColumn(name = "kode_transbuku")
+    private Transbuku transbuku;
+
+    public Transbuku getTransbuku() {
+        return transbuku;
+    }
+
+    public void setTransbuku(Transbuku transbuku) {
+        this.transbuku = transbuku;
+    }
 
     public String getKodeBuku() {
         return kodeBuku;

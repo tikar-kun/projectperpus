@@ -6,6 +6,15 @@ public class BukuDto {
     private String penulis;
     private String penerbit;
     private int stok;
+    public String kodeTransbuku;
+
+    public String getKodeTransbuku() {
+        return kodeTransbuku;
+    }
+
+    public void setKodeTransbuku(String kodeTransbuku) {
+        this.kodeTransbuku = kodeTransbuku;
+    }
 
     public String getKode() {
         return kode;

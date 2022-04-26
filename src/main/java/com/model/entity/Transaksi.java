@@ -15,9 +15,17 @@ public class Transaksi {
     @JoinColumn(name = "kd_pengguna",nullable = false)
     private Pengguna kodePengguna;
 
-    @OneToMany
-    @JoinColumn(name = "kode_buku",nullable = false)
-    private List<Buku> kodeBuku;
+    @ManyToOne
+    @JoinColumn(name = "kd_transbuku",nullable = false)
+    private Transbuku transbuku;
+
+    public Transbuku getTransbuku() {
+        return transbuku;
+    }
+
+    public void setTransbuku(Transbuku transbuku) {
+        this.transbuku = transbuku;
+    }
 
     @Column(name = "tanggal_pinjam")
     private Date tanggalPinjam;
@@ -39,14 +47,6 @@ public class Transaksi {
 
     public void setKodePengguna(Pengguna kodePengguna) {
         this.kodePengguna = kodePengguna;
-    }
-
-    public List<Buku> getKodeBuku() {
-        return kodeBuku;
-    }
-
-    public void setKodeBuku(List<Buku> kodeBuku) {
-        this.kodeBuku = kodeBuku;
     }
 
     public Date getTanggalPinjam() {

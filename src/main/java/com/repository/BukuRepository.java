@@ -2,12 +2,12 @@ package com.repository;
 
 import com.model.entity.Buku;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
+import javax.websocket.server.PathParam;
+import java.util.Optional;
 
-@Repository
 public interface BukuRepository extends JpaRepository<Buku, String> {
-
-    List<Buku> findAllByRakKodeRak(String kodeRak);
+    @Query(value = "select b from Buku b where b.judulBuku = :buku", nativeQuery = false)
+    public Optional<Buku> findBukuByName(@PathParam("buku") String buku);
 }

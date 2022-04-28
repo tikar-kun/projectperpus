@@ -10,10 +10,10 @@ import com.repository.PenggunaRepository;
 import com.repository.TransaksiRepository;
 import com.repository.TransbukuRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/Transaksi")
@@ -33,8 +33,12 @@ public class TransaksiController {
     public Transaksi convertDtoToEntity (TransaksiDto transaksiDto){
         Transaksi transaksi = new Transaksi();
         transaksi.setKodeTransaksi(transaksiDto.getKode());
-        transaksi.setTanggalPinjam(transaksiDto.getTanggalPinjam());
-        transaksi.setTanggalKembali(transaksiDto.getTanggalKembali());
+        transaksi.setHariPinjam(transaksiDto.getHariPinjam());
+        transaksi.setBulanPinjam(transaksiDto.getBulanPinjam());
+        transaksi.setTahunPinjam(transaksiDto.getTahunPinjam());
+        transaksi.setHarikembali(transaksiDto.getHariKembali());
+        transaksi.setBulanKembali(transaksiDto.getBulanKembali());
+        transaksi.setTahunKembali(transaksiDto.getTahunKembali());
         if(transbukuRepository.findById(transaksiDto.getKodeTransbuku()).isPresent()){
             Transbuku transbuku = transbukuRepository.findById(transaksiDto.getKodeTransbuku()).get();
             transaksi.setTransbuku(transbuku);
@@ -50,10 +54,40 @@ public class TransaksiController {
     private TransaksiDto convertEntityToDto(Transaksi transaksi){
         TransaksiDto dto = new TransaksiDto();
         dto.setKode(transaksi.getKodeTransaksi());
-        dto.setTanggalPinjam(transaksi.getTanggalPinjam());
-        dto.setTanggalKembali(transaksi.getTanggalKembali());
+        dto.setHariKembali(transaksi.getHarikembali());
+        dto.setBulanKembali(transaksi.getBulanKembali());
+        dto.setTahunKembali(transaksi.getTahunKembali());
+        dto.setHariPinjam(transaksi.getHariPinjam());
+        dto.setBulanKembali(transaksi.getBulanKembali());
+        dto.setTahunPinjam(transaksi.getTahunPinjam());
         dto.setKodePengguna(transaksi.getKodePengguna().getKodePengguna());
         dto.setKodeTransbuku(transaksi.getTransbuku().getKodeTransbuku());
+        dto.setKodeDenda(transaksi.getKodeDenda().getKodeDenda());
         return dto;
+    }
+
+    //lihat data by code transaksi
+    @GetMapping("/{code}")
+    public TransaksiDto get(@PathVariable String code){
+        if(transaksiRepository.findById(code).isPresent()){
+            TransaksiDto transaksiDto = convertEntityToDto(transaksiRepository.findById(code).get());
+            return transaksiDto;
+        }
+        return null;
+    }
+
+    @GetMapping("/pengguna/{codePengguna}")
+    public List<TransaksiDto> getByPengguna(@PathVariable String codePengguna){
+        List<Transaksi> transaksiList = transaksiRepository.findAllByPenggunaKodePengguna(codePengguna);
+        List<TransaksiDto> transaksiDtoList = transaksiList.stream().map(this::convertEntityToDto)
+                .collect(Collectors.toList());
+        return transaksiDtoList;
+    }
+
+    @PostMapping
+        public TransaksiDto insert(@RequestBody TransaksiDto dto){
+            Transaksi transaksi = convertDtoToEntity(dto);
+            transaksiRepository.save(transaksi);
+            return convertEntityToDto(transaksi);
     }
 }

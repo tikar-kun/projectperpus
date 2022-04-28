@@ -31,7 +31,8 @@ public class PenggunaController {
     private PenggunaDto convertToDto(Pengguna pengguna){
         PenggunaDto penggunaDto = new PenggunaDto();
         penggunaDto.setKode(pengguna.getKodePengguna());
-        penggunaDto.setNama(pengguna.getNamaPengguna());
+        penggunaDto.setFirstName(pengguna.getFirstName());
+        penggunaDto.setLastName(pengguna.getLastName());
         penggunaDto.setPeran(pengguna.getPeranPengguna());
         penggunaDto.setAlamat(pengguna.getAlamat());
         return penggunaDto;
@@ -39,7 +40,8 @@ public class PenggunaController {
     private Pengguna convertToEntity(PenggunaDto dto){
         Pengguna pengguna = new Pengguna();
         pengguna.setKodePengguna(dto.getKode());
-        pengguna.setNamaPengguna(dto.getNama());
+        pengguna.setFirstName(dto.getFirstName());
+        pengguna.setLastName(dto.getLastName());
         pengguna.setPeranPengguna(dto.getPeran());
         pengguna.setAlamat(dto.getAlamat());
         return pengguna;

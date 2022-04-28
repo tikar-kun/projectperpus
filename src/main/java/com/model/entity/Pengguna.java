@@ -11,8 +11,11 @@ public class Pengguna {
     @Column(name="kd_pengguna", length = 25)
     private String kodePengguna;
 
-    @Column(name="nama_pengguna")
-    private String namaPengguna;
+    @Column(name="nama_depan")
+    private String firstName;
+
+    @Column(name = "nama_belakang")
+    private String lastName;
 
     @Column(name="peran")
     private String peranPengguna;
@@ -28,12 +31,20 @@ public class Pengguna {
         this.kodePengguna = kodePengguna;
     }
 
-    public String getNamaPengguna() {
-        return namaPengguna;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setNamaPengguna(String namaPengguna) {
-        this.namaPengguna = namaPengguna;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getPeranPengguna() {

@@ -2,7 +2,8 @@ package com.model.dto;
 
 public class PenggunaDto {
 private String kode;
-private String nama;
+private String firstName;
+private String lastName;
 private String peran;
 private String alamat;
 
@@ -14,12 +15,20 @@ private String alamat;
         this.kode = kode;
     }
 
-    public String getNama() {
-        return nama;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setNama(String nama) {
-        this.nama = nama;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getPeran() {

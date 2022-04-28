@@ -10,10 +10,7 @@ import com.repository.PenggunaRepository;
 import com.repository.TransaksiRepository;
 import com.repository.TransbukuRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -79,11 +76,18 @@ public class TransaksiController {
         return null;
     }
 
-    @GetMapping("pengguna/{codePengguna}")
+    @GetMapping("/pengguna/{codePengguna}")
     public List<TransaksiDto> getByPengguna(@PathVariable String codePengguna){
         List<Transaksi> transaksiList = transaksiRepository.findAllByPenggunaKodePengguna(codePengguna);
         List<TransaksiDto> transaksiDtoList = transaksiList.stream().map(this::convertEntityToDto)
                 .collect(Collectors.toList());
         return transaksiDtoList;
+    }
+
+    @PostMapping
+        public TransaksiDto insert(@RequestBody TransaksiDto dto){
+            Transaksi transaksi = convertDtoToEntity(dto);
+            transaksiRepository.save(transaksi);
+            return convertEntityToDto(transaksi);
     }
 }

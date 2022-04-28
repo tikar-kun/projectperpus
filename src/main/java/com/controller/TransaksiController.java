@@ -33,8 +33,12 @@ public class TransaksiController {
     public Transaksi convertDtoToEntity (TransaksiDto transaksiDto){
         Transaksi transaksi = new Transaksi();
         transaksi.setKodeTransaksi(transaksiDto.getKode());
-        transaksi.setTanggalPinjam(transaksiDto.getTanggalPinjam());
-        transaksi.setTanggalKembali(transaksiDto.getTanggalKembali());
+        transaksi.setHariPinjam(transaksiDto.getHariPinjam());
+        transaksi.setBulanPinjam(transaksiDto.getBulanPinjam());
+        transaksi.setTahunPinjam(transaksiDto.getTahunPinjam());
+        transaksi.setHarikembali(transaksiDto.getHariKembali());
+        transaksi.setBulanKembali(transaksiDto.getBulanKembali());
+        transaksi.setTahunKembali(transaksiDto.getTahunKembali());
         if(transbukuRepository.findById(transaksiDto.getKodeTransbuku()).isPresent()){
             Transbuku transbuku = transbukuRepository.findById(transaksiDto.getKodeTransbuku()).get();
             transaksi.setTransbuku(transbuku);
@@ -50,10 +54,15 @@ public class TransaksiController {
     private TransaksiDto convertEntityToDto(Transaksi transaksi){
         TransaksiDto dto = new TransaksiDto();
         dto.setKode(transaksi.getKodeTransaksi());
-        dto.setTanggalPinjam(transaksi.getTanggalPinjam());
-        dto.setTanggalKembali(transaksi.getTanggalKembali());
+        dto.setHariKembali(transaksi.getHarikembali());
+        dto.setBulanKembali(transaksi.getBulanKembali());
+        dto.setTahunKembali(transaksi.getTahunKembali());
+        dto.setHariPinjam(transaksi.getHariPinjam());
+        dto.setBulanKembali(transaksi.getBulanKembali());
+        dto.setTahunPinjam(transaksi.getTahunPinjam());
         dto.setKodePengguna(transaksi.getKodePengguna().getKodePengguna());
         dto.setKodeTransbuku(transaksi.getTransbuku().getKodeTransbuku());
+        dto.setKodeDenda(transaksi.getKodeDenda().getKodeDenda());
         return dto;
     }
 }

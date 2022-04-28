@@ -7,8 +7,8 @@ import java.util.List;
 @Table(name = "t_rak")
 public class Rak {
     @Id
-    @Column(name = "kode_rak", length = 25)
-    private String kodeRak;
+    @Column(name = "id_rak", length = 25)
+    private String idRak;
 
     @Column(name = "nama_rak")
     private String namaRak;
@@ -16,39 +16,12 @@ public class Rak {
     @Column(name = "lokasi_rak")
     private String lokasiRak;
 
-    @OneToMany
-    @JoinColumn(name = "kode_buku", nullable = false)
-    private List<Buku> buku;
+    public String getIdRak() { return idRak; }
+    public void setIdRak(String idRak) { this.idRak = idRak; }
 
-    public String getKodeRak() {
-        return kodeRak;
-    }
+    public String getNamaRak() { return namaRak; }
+    public void setNamaRak(String namaRak) { this.namaRak = namaRak; }
 
-    public void setKodeRak(String kodeRak) {
-        this.kodeRak = kodeRak;
-    }
-
-    public String getNamaRak() {
-        return namaRak;
-    }
-
-    public void setNamaRak(String namaRak) {
-        this.namaRak = namaRak;
-    }
-
-    public String getLokasiRak() {
-        return lokasiRak;
-    }
-
-    public void setLokasiRak(String lokasiRak) {
-        this.lokasiRak = lokasiRak;
-    }
-
-    public List<Buku> getBuku() {
-        return buku;
-    }
-
-    public void setBuku(List<Buku> buku) {
-        this.buku = buku;
-    }
+    public String getLokasiRak() { return lokasiRak; }
+    public void setLokasiRak(String lokasiRak) { this.lokasiRak = lokasiRak; }
 }

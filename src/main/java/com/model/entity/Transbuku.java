@@ -12,6 +12,17 @@ public class Transbuku {
     @Column(name = "kd_transbuku")
     private String kodeTransbuku;
 
+    @Column(name = "kode_buku")
+    private String kodeBuku;
+
+    public String getKodeBuku() {
+        return kodeBuku;
+    }
+
+    public void setKodeBuku(String kodeBuku) {
+        this.kodeBuku = kodeBuku;
+    }
+
     public String getKodeTransbuku() {
         return kodeTransbuku;
     }

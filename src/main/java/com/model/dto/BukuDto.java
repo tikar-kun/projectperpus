@@ -1,58 +1,59 @@
 package com.model.dto;
 
 public class BukuDto {
-    private String kode;
-    private String judul;
-    private String penulis;
-    private String penerbit;
-    private int stok;
-    public String kodeTransbuku;
+    private String idBuku;
+    private String judulBuku;
+    private String penulisBuku;
+    private String penerbitBuku;
+    private Integer tahunTerbit;
+    private String namaKategori;
+    private Integer jumlahBuku;
+    private Integer stokBuku;
+    private String idRak;
+    private String lokasiRak;
 
-    public String getKodeTransbuku() {
-        return kodeTransbuku;
+    public String getIdBuku() {
+        return idBuku;
+    }
+    public void setIdBuku(String kode) {
+        this.idBuku = kode;
     }
 
-    public void setKodeTransbuku(String kodeTransbuku) {
-        this.kodeTransbuku = kodeTransbuku;
+    public String getJudulBuku() {
+        return judulBuku;
+    }
+    public void setJudulBuku(String judulBuku) {
+        this.judulBuku = judulBuku;
     }
 
-    public String getKode() {
-        return kode;
+    public String getPenulisBuku() {
+        return penulisBuku;
+    }
+    public void setPenulisBuku(String penulisBuku) {
+        this.penulisBuku = penulisBuku;
     }
 
-    public void setKode(String kode) {
-        this.kode = kode;
+    public String getPenerbitBuku() {
+        return penerbitBuku;
+    }
+    public void setPenerbitBuku(String penerbitBuku) {
+        this.penerbitBuku = penerbitBuku;
     }
 
-    public String getJudul() {
-        return judul;
-    }
+    public Integer getTahunTerbit() {return tahunTerbit;}
+    public void setTahunTerbit(Integer tahunTerbit) {this.tahunTerbit = tahunTerbit;}
 
-    public void setJudul(String judul) {
-        this.judul = judul;
-    }
+    public String getNamaKategori() { return namaKategori; }
+    public void setNamaKategori(String namaKategori) { this.namaKategori = namaKategori; }
 
-    public String getPenulis() {
-        return penulis;
-    }
+    public Integer getJumlahBuku() { return jumlahBuku; }
+    public void setJumlahBuku(Integer jumlahBuku) { this.jumlahBuku = jumlahBuku; }
 
-    public void setPenulis(String penulis) {
-        this.penulis = penulis;
+    public Integer getStokBuku() {
+        return stokBuku;
     }
+    public void setStokBuku(Integer stokBuku) { this.stokBuku = stokBuku;}
 
-    public String getPenerbit() {
-        return penerbit;
-    }
-
-    public void setPenerbit(String penerbit) {
-        this.penerbit = penerbit;
-    }
-
-    public int getStok() {
-        return stok;
-    }
-
-    public void setStok(int stok) {
-        this.stok = stok;
-    }
+    public String getIdRak() { return idRak; }
+    public void setIdRak(String idRak) { this.idRak = idRak; }
 }

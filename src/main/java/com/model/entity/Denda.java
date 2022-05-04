@@ -15,6 +15,9 @@ public class Denda {
     @OneToOne
     @JoinColumn
     private Transaksi kodeTransaksi;
+    @ManyToOne
+    @JoinColumn
+    private Pengguna kodePengguna;
 
     public String getKodeDenda() {
         return kodeDenda;
@@ -37,5 +40,13 @@ public class Denda {
 
     public void setKodeTransaksi(Transaksi kodeTransaksi) {
         this.kodeTransaksi = kodeTransaksi;
+    }
+
+    public Pengguna getKodePengguna() {
+        return kodePengguna;
+    }
+
+    public void setKodePengguna(Pengguna kodePengguna) {
+        this.kodePengguna = kodePengguna;
     }
 }

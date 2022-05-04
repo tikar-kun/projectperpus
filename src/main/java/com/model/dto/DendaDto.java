@@ -2,7 +2,7 @@ package com.model.dto;
 
 public class DendaDto {
     private String kodeDenda;
-    private int besarDenda;
+    private Integer besarDenda;
     private String kodeTransaksi;
 
     public String getKodeDenda() {
@@ -13,11 +13,11 @@ public class DendaDto {
         this.kodeDenda = kodeDenda;
     }
 
-    public int getBesarDenda() {
+    public Integer getBesarDenda() {
         return besarDenda;
     }
 
-    public void setBesarDenda(int besarDenda) {
+    public void setBesarDenda(Integer besarDenda) {
         this.besarDenda = besarDenda;
     }
 

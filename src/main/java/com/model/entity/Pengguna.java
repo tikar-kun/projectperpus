@@ -23,6 +23,10 @@ public class Pengguna {
     @Column(name="alamat")
     private String alamat;
 
+    @ManyToOne
+    @JoinColumn (name = "kode_transaksi", nullable = false)
+    private Transaksi kodeTransaksi;
+
     public String getKodePengguna() {
         return kodePengguna;
     }
@@ -61,5 +65,13 @@ public class Pengguna {
 
     public void setAlamat(String alamat) {
         this.alamat = alamat;
+    }
+
+    public Transaksi getKodeTransaksi() {
+        return kodeTransaksi;
+    }
+
+    public void setKodeTransaksi(Transaksi kodeTransaksi) {
+        this.kodeTransaksi = kodeTransaksi;
     }
 }

@@ -11,6 +11,7 @@ public class BukuDto {
     private Integer stokBuku;
     private String idRak;
     private String lokasiRak;
+    private String kodeTransaksi;
 
     public String getIdBuku() {
         return idBuku;
@@ -56,4 +57,12 @@ public class BukuDto {
 
     public String getIdRak() { return idRak; }
     public void setIdRak(String idRak) { this.idRak = idRak; }
+
+    public String getKodeTransaksi() {
+        return kodeTransaksi;
+    }
+
+    public void setKodeTransaksi(String kodeTransaksi) {
+        this.kodeTransaksi = kodeTransaksi;
+    }
 }

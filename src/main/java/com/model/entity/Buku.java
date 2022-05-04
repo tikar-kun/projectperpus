@@ -33,6 +33,9 @@ public class Buku {
     @ManyToOne
     @JoinColumn(name = "rak", nullable = false)
     private Rak rak;
+    @ManyToOne
+    @JoinColumn(name = "kode_transaksi", nullable = false)
+    private Transaksi kodeTransaksi;
 
     public String getIdBuku() {
         return idBuku;

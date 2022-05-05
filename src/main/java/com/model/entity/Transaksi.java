@@ -16,7 +16,7 @@ public class Transaksi {
     @Column(name = "tanggal_kembali")
    private Date tanggalKembali;
     @OneToOne
-    @JoinColumn
+    @JoinColumn (name = "kode_denda", nullable = false)
     private Denda kodeDenda;
 
     public Denda getKodeDenda() {

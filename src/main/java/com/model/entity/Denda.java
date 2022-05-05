@@ -6,14 +6,14 @@ import javax.persistence.*;
 @Table (name = "t_denda")
 public class Denda {
     @Id
-    @Column (name = " kode_denda")
+    @Column (name = "kode_denda")
     private String kodeDenda;
 
-    @Column
-    private int besarDenda;
+    @Column (name = "besar_denda")
+    private long besarDenda;
 
     @OneToOne
-    @JoinColumn
+    @JoinColumn (name = "kode_transaksi")
     private Transaksi kodeTransaksi;
     @ManyToOne
     @JoinColumn
@@ -26,11 +26,11 @@ public class Denda {
     public void setKodeDenda(String kodeDenda) {
         this.kodeDenda = kodeDenda;
     }
-    public int getBesarDenda() {
-        return besarDenda;
+    public long getBesarDenda() {
+        return this.besarDenda;
     }
 
-    public void setBesarDenda(int besarDenda) {
+    public void setBesarDenda(long besarDenda) {
         this.besarDenda = besarDenda;
     }
 

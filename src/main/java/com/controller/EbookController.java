@@ -1,7 +1,9 @@
 package com.controller;
 
+import com.model.dto.BukuDto;
 import com.model.dto.DefaultResponse;
 import com.model.dto.EbookDto;
+import com.model.entity.Buku;
 import com.model.entity.Ebook;
 import com.repository.EbookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,15 +34,16 @@ public class EbookController {
     }
 
     //menambahkan ebook
+    //jika id ebook sama, maka update
     @PostMapping("/inputebook")
     public DefaultResponse<EbookDto> saveebook(@RequestBody EbookDto ebookDto){
         Ebook ebook = convertDtotoEntity(ebookDto);
         DefaultResponse<EbookDto> response = new DefaultResponse<>();
 
         //cek data
-        Optional<Ebook> optional = ebookRepository.findEbookByName(ebookDto.getJudulEbook());
+        Optional<Ebook> optional = ebookRepository.findById(ebookDto.getIdEbook());
         if(optional.isPresent()){
-            response.setMessage("Ebook sudah tersedia");
+            response.setMessage("Ebook berhasil di update");
         } else {
             ebookRepository.save(ebook);
             response.setMessage("Berhasil menyimpan");

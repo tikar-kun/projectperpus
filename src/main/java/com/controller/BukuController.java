@@ -1,5 +1,6 @@
 package com.controller;
 
+import com.model.dto.RakDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,15 +38,19 @@ public class BukuController {
     }
 
     //menambahkan buku
+    //jika id buku sama, maka update
     @PostMapping("/inputbuku")
     public DefaultResponse<BukuDto> savebuku(@RequestBody BukuDto bukuDto){
         Buku buku = convertDtotoEntity(bukuDto);
         DefaultResponse<BukuDto> response = new DefaultResponse<>();
 
         //cek data
-        Optional<Buku> optional = bukuRepository.findById(bukuDto.getJudulBuku());
-        if(optional.isPresent()){
-            response.setMessage("Buku sudah tersedia");
+        Optional<Buku> optional = bukuRepository.findById(bukuDto.getIdBuku());
+
+        if (optional.isPresent()){
+            bukuRepository.save(buku);
+            response.setMessage("Berhasil update data");
+            response.setData(bukuDto);
         } else {
             bukuRepository.save(buku);
             response.setMessage("Berhasil menyimpan");
@@ -68,6 +73,16 @@ public class BukuController {
         return response;
     }
 
+    //mengambil data buku berdasarkan kategori
+    @GetMapping("/getbykategori/{kategori}")
+    public List<BukuDto> getListbyKategori(@PathVariable String kategori) {
+        List<BukuDto> list = new ArrayList<>();
+        for(Buku b: bukuRepository.findAllByNamaKategori(kategori)){
+            list.add(convertEntitytoDto(b));
+        }
+        return list;
+    }
+
     //convert Dto ke entity
     public Buku convertDtotoEntity(BukuDto dto) {
         Buku buku = new Buku();
@@ -79,6 +94,7 @@ public class BukuController {
         buku.setNamaKategori(dto.getNamaKategori());
         buku.setJumlahBuku(dto.getJumlahBuku());
         buku.setStokBuku(dto.getStokBuku());
+        buku.setStatus(dto.getStatus());
 
         if(rakRepository.findById(dto.getIdRak()).isPresent()){
             Rak rak = rakRepository.findById(dto.getIdRak()).get();
@@ -99,6 +115,7 @@ public class BukuController {
         dto.setJumlahBuku(entity.getJumlahBuku());
         dto.setStokBuku(entity.getStokBuku());
         dto.setIdRak(entity.getRak().getIdRak());
+        dto.setStatus(entity.getStatus());
         return dto;
     }
 }

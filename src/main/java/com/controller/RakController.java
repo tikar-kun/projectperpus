@@ -29,15 +29,21 @@ public class RakController {
     }
 
     //menambahkan rak
+    //jika id rak sama, maka update
     @PostMapping("/inputrak")
     public DefaultResponse<RakDto> saverak(@RequestBody RakDto rakDto){
         Rak rak = convertDtotoEntity(rakDto);
         DefaultResponse<RakDto> response = new DefaultResponse<>();
 
         //cek data
-        Optional<Rak> optional = rakRepository.findRakByNama(rakDto.getNamaRak());
+        Optional<Rak> optional = rakRepository.findRakByLokasiRak(rakDto.getLokasiRak());
+        Optional<Rak> optional1 = rakRepository.findById(rakDto.getIdRak());
         if(optional.isPresent()){
             response.setMessage("Rak sudah tersedia");
+        } else if (optional1.isPresent()){
+            rakRepository.save(rak);
+            response.setMessage("Berhasil update data");
+            response.setData(rakDto);
         } else {
             rakRepository.save(rak);
             response.setMessage("Berhasil menyimpan");
@@ -46,18 +52,28 @@ public class RakController {
         return response;
     }
 
-    //mengambil data rak berdasarkan nama
-    @GetMapping("/getbyname/{name}")
-    public DefaultResponse<RakDto> getByName(@PathVariable String name) {
+    //mengambil data rak berdasarkan lokasi
+    @GetMapping("/getbylokasi/{lokasirak}")
+    public DefaultResponse<RakDto> getByLokasiRak (@PathVariable String lokasirak) {
         DefaultResponse<RakDto> response = new DefaultResponse<>();
-        Optional<Rak> optional = rakRepository.findRakByNama(name);
-        if(optional.isPresent()){
+        Optional<Rak> optional = rakRepository.findRakByLokasiRak(lokasirak);
+        if(optional.isEmpty()){
+            response.setMessage("Rak Tidak Ditemukan");
+        } else {
             response.setMessage("Rak Ditemukan");
             response.setData(convertEntitytoDto(optional.get()));
-        } else {
-            response.setMessage("Rak Tidak Ditemukan");
         }
         return response;
+    }
+
+    //mengambil data rak berdasarkan nama
+    @GetMapping("/getbyname/{name}")
+    public List<RakDto> getListbyNama(@PathVariable String name) {
+        List<RakDto> list = new ArrayList<>();
+        for(Rak r: rakRepository.findAllByNamaRak(name)){
+            list.add(convertEntitytoDto(r));
+        }
+        return list;
     }
 
     //convert Dto ke entity

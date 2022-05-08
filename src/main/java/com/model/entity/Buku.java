@@ -1,6 +1,10 @@
 package com.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "t_buku")
@@ -34,8 +38,10 @@ public class Buku {
     @JoinColumn(name = "rak", nullable = false)
     private Rak rak;
 
-    @Column(name = "status")
-    private String status;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "idBuku")
+    private Set<Akses> akses = new HashSet<>();
 
     public String getIdBuku() {
         return idBuku;

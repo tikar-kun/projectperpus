@@ -1,9 +1,10 @@
 package com.model.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "t_ebook")
@@ -32,6 +33,10 @@ public class Ebook {
 
     @Column(name = "jumlah_halaman")
     private Integer jumlahHalaman;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "idEbook")
+    private Set<Akses> akses = new HashSet<>();
 
     public String getIdEbook() {
         return idEbook;

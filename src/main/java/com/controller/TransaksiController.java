@@ -76,13 +76,13 @@ public class TransaksiController {
         return null;
     }
 
-    @GetMapping("/pengguna/{codePengguna}")
-    public List<TransaksiDto> getByPengguna(@PathVariable String codePengguna){
-        List<Transaksi> transaksiList = transaksiRepository.findAllByPenggunaKodePengguna(codePengguna);
-        List<TransaksiDto> transaksiDtoList = transaksiList.stream().map(this::convertEntityToDto)
-                .collect(Collectors.toList());
-        return transaksiDtoList;
-    }
+//    @GetMapping("/pengguna/{codePengguna}")
+//    public List<TransaksiDto> getByPengguna(@PathVariable String codePengguna){
+//        List<Transaksi> transaksiList = transaksiRepository.findAllByPenggunaKodePengguna(codePengguna);
+//        List<TransaksiDto> transaksiDtoList = transaksiList.stream().map(this::convertEntityToDto)
+//                .collect(Collectors.toList());
+//        return transaksiDtoList;
+//    }
 
     @PostMapping
         public TransaksiDto insert(@RequestBody TransaksiDto dto){

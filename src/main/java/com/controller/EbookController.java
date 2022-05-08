@@ -1,9 +1,7 @@
 package com.controller;
 
-import com.model.dto.BukuDto;
-import com.model.dto.DefaultResponse;
+import com.helper.DefaultResponse;
 import com.model.dto.EbookDto;
-import com.model.entity.Buku;
 import com.model.entity.Ebook;
 import com.repository.EbookRepository;
 import org.springframework.beans.factory.annotation.Autowired;

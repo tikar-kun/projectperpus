@@ -1,7 +1,7 @@
 package com.controller;
 
 import org.springframework.web.bind.annotation.*;
-import com.model.dto.DefaultResponse;
+import com.helper.DefaultResponse;
 import com.model.dto.RakDto;
 import com.model.entity.Rak;
 import com.repository.RakRepository;

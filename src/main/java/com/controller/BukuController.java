@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.model.dto.BukuDto;
-import com.model.dto.DefaultResponse;
+import com.helper.DefaultResponse;
 import com.model.entity.Buku;
 import com.model.entity.Rak;
 import com.repository.BukuRepository;
@@ -20,7 +20,7 @@ import java.util.Optional;
 public class BukuController {
     private final BukuRepository bukuRepository;
     private final RakRepository rakRepository;
-//
+
     @Autowired
     private BukuService bukuService;
 
@@ -67,12 +67,10 @@ public class BukuController {
     public DefaultResponse<BukuDto> updateArsip (@PathVariable String idBuku){
         DefaultResponse<BukuDto> response = new DefaultResponse<>();
         Optional<Buku> optional = bukuRepository.findById(idBuku);
-
         if(optional.isPresent()){
             bukuService.arsipStatus(idBuku);
-//            Optional<Buku> optional2 = bukuRepository.findById(idBuku);
             response.setMessage("buku telah diarsipkan");
-//            response.setData(convertEntitytoDto(optional2.get()));
+            response.setData(convertEntitytoDto2(optional.get()));
         } else {
             response.setMessage("id buku salah");
         }
@@ -87,8 +85,7 @@ public class BukuController {
         if(optional.isPresent()){
             bukuService.adaStatus(idBuku);
             response.setMessage("buku telah tersedia");
-//            Optional<Buku> optional2 = bukuRepository.findById(idBuku);
-//            response.setData(convertEntitytoDto(optional2.get()));
+            response.setData(convertEntitytoDto3(optional.get()));
         } else {
             response.setMessage("id buku salah");
         }
@@ -96,17 +93,13 @@ public class BukuController {
     }
 
     //mengambil data buku berdasarkan nama
-    @GetMapping("/getbyname/{name}")
-    public DefaultResponse<BukuDto> getByName(@PathVariable String name) {
-        DefaultResponse<BukuDto> response = new DefaultResponse<>();
-        Optional<Buku> optional = bukuRepository.findBukuByName(name);
-        if(optional.isPresent()){
-            response.setMessage("Buku Ditemukan");
-            response.setData(convertEntitytoDto(optional.get()));
-        } else {
-            response.setMessage("Buku Tidak Ditemukan");
+    @GetMapping("/getbyname/{judulBuku}")
+    public List<BukuDto> getListbyJudul(@PathVariable String judulBuku){
+        List<BukuDto> list = new ArrayList<>();
+        for(Buku b: bukuRepository.findByJudulBuku(judulBuku)){
+            list.add(convertEntitytoDto(b));
         }
-        return response;
+        return list;
     }
 
     //mengambil data buku berdasarkan kategori
@@ -152,6 +145,38 @@ public class BukuController {
         dto.setStokBuku(entity.getStokBuku());
         dto.setIdRak(entity.getRak().getIdRak());
         dto.setStatus(entity.getStatus());
+        return dto;
+    }
+
+    //convert Entity to Dto untuk arsip
+    public BukuDto convertEntitytoDto2(Buku entity) {
+        BukuDto dto = new BukuDto();
+        dto.setIdBuku(entity.getIdBuku());
+        dto.setJudulBuku(entity.getJudulBuku());
+        dto.setPenulisBuku(entity.getPenulisBuku());
+        dto.setPenerbitBuku(entity.getPenerbitBuku());
+        dto.setTahunTerbit(entity.getTahunTerbit());
+        dto.setNamaKategori(entity.getNamaKategori());
+        dto.setJumlahBuku(entity.getJumlahBuku());
+        dto.setStokBuku(entity.getStokBuku());
+        dto.setIdRak(entity.getRak().getIdRak());
+        dto.setStatus("diarsipkan");
+        return dto;
+    }
+
+    //convert Entity to Dto untuk available
+    public BukuDto convertEntitytoDto3(Buku entity) {
+        BukuDto dto = new BukuDto();
+        dto.setIdBuku(entity.getIdBuku());
+        dto.setJudulBuku(entity.getJudulBuku());
+        dto.setPenulisBuku(entity.getPenulisBuku());
+        dto.setPenerbitBuku(entity.getPenerbitBuku());
+        dto.setTahunTerbit(entity.getTahunTerbit());
+        dto.setNamaKategori(entity.getNamaKategori());
+        dto.setJumlahBuku(entity.getJumlahBuku());
+        dto.setStokBuku(entity.getStokBuku());
+        dto.setIdRak(entity.getRak().getIdRak());
+        dto.setStatus("tersedia");
         return dto;
     }
 }

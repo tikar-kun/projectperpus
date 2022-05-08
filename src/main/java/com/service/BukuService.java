@@ -10,14 +10,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class BukuService {
     private final BukuRepository bukuRepository;
 
-    public BukuService(BukuRepository bukuRepository) {
-        this.bukuRepository = bukuRepository;
-    }
+    public BukuService(BukuRepository bukuRepository) { this.bukuRepository = bukuRepository; }
 
     public int arsipStatus(String idBuku) { return bukuRepository.arsipBuku(idBuku);}
     public int adaStatus(String idBuku) {return bukuRepository.adaBuku(idBuku);}
+
+//    public Buku updateStok(Buku buku) {
+//        Buku entity = bukuRepository.save(buku);
+//        entity.setStokBuku();
+//    }
 }
 
-//public interface BukuService {
-//    Buku updateArsipBuku(Buku buku);
-//}

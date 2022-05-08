@@ -6,11 +6,10 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface BukuRepository extends JpaRepository<Buku, String> {
-    @Query(value = "select b from Buku b where b.judulBuku like '%name'", nativeQuery = false)
-    Optional<Buku> findBukuByName(String name);
+    @Query(value = "select b from Buku b where b.judulBuku =:judulBuku")
+    List<Buku> findByJudulBuku(String judulBuku);
 
     List<Buku> findAllByNamaKategori(String namaKategori);
 
@@ -21,4 +20,5 @@ public interface BukuRepository extends JpaRepository<Buku, String> {
     @Modifying
     @Query("UPDATE Buku b SET b.status = 'tersedia' WHERE b.idBuku =:idBuku")
     int adaBuku(String idBuku);
+
 }

@@ -10,7 +10,7 @@ public class BukuDto {
     private Integer jumlahBuku;
     private Integer stokBuku;
     private String idRak;
-    private String lokasiRak;
+    private String status;
 
     public String getIdBuku() {
         return idBuku;
@@ -56,4 +56,7 @@ public class BukuDto {
 
     public String getIdRak() { return idRak; }
     public void setIdRak(String idRak) { this.idRak = idRak; }
+
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status;}
 }

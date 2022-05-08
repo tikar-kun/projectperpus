@@ -38,6 +38,7 @@ public class Buku {
     @JoinColumn(name = "rak", nullable = false)
     private Rak rak;
 
+
     @JsonIgnore
     @OneToMany(mappedBy = "idBuku")
     private Set<Akses> akses = new HashSet<>();
@@ -87,4 +88,6 @@ public class Buku {
     public Rak getRak() {return rak;}
     public void setRak(Rak rak) {this.rak = rak;}
 
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 }

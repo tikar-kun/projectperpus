@@ -1,6 +1,6 @@
 package com.controller;
 
-import com.model.dto.RakDto;
+import com.service.BukuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +20,9 @@ import java.util.Optional;
 public class BukuController {
     private final BukuRepository bukuRepository;
     private final RakRepository rakRepository;
+//
+    @Autowired
+    private BukuService bukuService;
 
     @Autowired
     public BukuController(BukuRepository bukuRepository, RakRepository rakRepository){
@@ -55,6 +58,39 @@ public class BukuController {
             bukuRepository.save(buku);
             response.setMessage("Berhasil menyimpan");
             response.setData(bukuDto);
+        }
+        return response;
+    }
+
+//    update status (ada/tidak ada)
+    @PutMapping("/archive/{idBuku}")
+    public DefaultResponse<BukuDto> updateArsip (@PathVariable String idBuku){
+        DefaultResponse<BukuDto> response = new DefaultResponse<>();
+        Optional<Buku> optional = bukuRepository.findById(idBuku);
+
+        if(optional.isPresent()){
+            bukuService.arsipStatus(idBuku);
+//            Optional<Buku> optional2 = bukuRepository.findById(idBuku);
+            response.setMessage("buku telah diarsipkan");
+//            response.setData(convertEntitytoDto(optional2.get()));
+        } else {
+            response.setMessage("id buku salah");
+        }
+        return response;
+    }
+
+    @PutMapping("/available/{idBuku}")
+    public DefaultResponse<BukuDto> updateAvailable (@PathVariable String idBuku){
+        DefaultResponse<BukuDto> response = new DefaultResponse<>();
+        Optional<Buku> optional = bukuRepository.findById(idBuku);
+
+        if(optional.isPresent()){
+            bukuService.adaStatus(idBuku);
+            response.setMessage("buku telah tersedia");
+//            Optional<Buku> optional2 = bukuRepository.findById(idBuku);
+//            response.setData(convertEntitytoDto(optional2.get()));
+        } else {
+            response.setMessage("id buku salah");
         }
         return response;
     }

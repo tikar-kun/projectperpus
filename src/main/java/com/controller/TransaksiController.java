@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/Transaksi")
+@RequestMapping("/transaksi")
 public class TransaksiController {
     private final PenggunaRepository penggunaRepository;
     private final TransaksiRepository transaksiRepository ;
@@ -100,6 +100,7 @@ public class TransaksiController {
         DefaultResponse<TransaksiDto> response = new DefaultResponse<>();
         SimpleDateFormat format = new SimpleDateFormat("dd/mm/yyyy");
         //cek
+
 
         Optional<Pengguna> optional = penggunaRepository.findById(transaksiDto.getKodePengguna());
         if(optional.isPresent()){

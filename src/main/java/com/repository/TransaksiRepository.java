@@ -12,6 +12,10 @@ import java.util.Optional;
 
 
 public interface TransaksiRepository extends JpaRepository<Transaksi, String> {
+
 //    @Query(value = "select t from Transaksi t where t.kodeTransaksi = :kode", nativeQuery = false)
 //    public Optional<Buku> findTransaksiByKodeTransaksi(@PathParam("kode") String transaksi);
+
+//    List<Transaksi> findAllByPenggunaKodePengguna(String kode);
+
 }

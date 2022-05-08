@@ -1,4 +1,4 @@
-package com.model.dto;
+package com.helper;
 
 public class DefaultResponse<T> {
     private String message;

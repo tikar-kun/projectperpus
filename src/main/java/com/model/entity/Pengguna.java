@@ -1,7 +1,13 @@
 package com.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.persistence.Table;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="t_pengguna")
@@ -20,12 +26,31 @@ public class Pengguna {
     @Column(name="peran")
     private String peranPengguna;
 
+    @Column(name = "jenis_kelamin")
+    private String jenisKelamin;
+
     @Column(name="alamat")
     private String alamat;
 
     @ManyToOne
     @JoinColumn (name = "kode_transaksi", nullable = false)
     private Transaksi kodeTransaksi;
+
+    @Column(name = "kontak", length = 14)
+    private String kontak;
+
+    @JsonFormat(pattern = "dd-MM-yyyy hh:mm:ss", timezone = "Asia/Bangkok")
+    @Column(name = "tanggal_daftar")
+    private Date tanggalDaftar;
+
+    @JsonFormat(pattern = "dd-MM-yyyy hh:mm:ss", timezone = "Asia/Bangkok")
+    @Column(name = "tanggal_edit")
+    private Date tanggalEdit;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "kodePengguna")
+    private Set<Akses> akses = new HashSet<>();
+
 
     public String getKodePengguna() {
         return kodePengguna;
@@ -59,6 +84,14 @@ public class Pengguna {
         this.peranPengguna = peranPengguna;
     }
 
+    public String getJenisKelamin() {
+        return jenisKelamin;
+    }
+
+    public void setJenisKelamin(String jenisKelamin) {
+        this.jenisKelamin = jenisKelamin;
+    }
+
     public String getAlamat() {
         return alamat;
     }
@@ -67,11 +100,44 @@ public class Pengguna {
         this.alamat = alamat;
     }
 
+
     public Transaksi getKodeTransaksi() {
         return kodeTransaksi;
     }
 
     public void setKodeTransaksi(Transaksi kodeTransaksi) {
         this.kodeTransaksi = kodeTransaksi;
+
+    public String getKontak() {
+        return kontak;
+    }
+
+    public void setKontak(String kontak) {
+        this.kontak = kontak;
+    }
+
+    public Date getTanggalDaftar() {
+        return tanggalDaftar;
+    }
+
+    public void setTanggalDaftar(Date tanggalDaftar) {
+        this.tanggalDaftar = tanggalDaftar;
+    }
+
+    public Set<Akses> getAkses() {
+        return akses;
+    }
+
+    public void setAkses(Set<Akses> akses) {
+        this.akses = akses;
+    }
+
+    public Date getTanggalEdit() {
+        return tanggalEdit;
+    }
+
+    public void setTanggalEdit(Date tanggalEdit) {
+        this.tanggalEdit = tanggalEdit;
+
     }
 }

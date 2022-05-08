@@ -3,9 +3,11 @@ package com.controller;
 import com.helpers.DefaultResponse;
 import com.model.dto.PenggunaDto;
 import com.model.entity.Akses;
+import com.model.entity.Buku;
 import com.model.entity.Ebook;
 import com.model.entity.Pengguna;
 import com.repository.AksesRepository;
+import com.repository.BukuRepository;
 import com.repository.EbookRepository;
 import com.repository.PenggunaRepository;
 import org.springframework.web.bind.annotation.*;
@@ -24,11 +26,13 @@ public class PenggunaController {
     PenggunaRepository repoPengguna;
     final
     AksesRepository repoAkses;
+    final BukuRepository repoBuku;
 
-    public PenggunaController(EbookRepository repoEbook, PenggunaRepository repoPengguna, AksesRepository repoAkses) {
+    public PenggunaController(EbookRepository repoEbook, PenggunaRepository repoPengguna, AksesRepository repoAkses, BukuRepository repoBuku) {
         this.repoEbook = repoEbook;
         this.repoPengguna = repoPengguna;
         this.repoAkses = repoAkses;
+        this.repoBuku = repoBuku;
     }
 
     @GetMapping
@@ -102,6 +106,19 @@ public class PenggunaController {
         Pengguna pengguna = repoPengguna.findPenggunaByKode(kodePengguna).get();
         Ebook ebook = repoEbook.findEbookById(idEbook).get();
         akses.setIdEbook(ebook);
+        akses.setKodePengguna(pengguna);
+        return repoAkses.save(akses);
+    }
+    @PutMapping("/{id}/kodepengguna/{kodePengguna}/Buku/{idBuku}")
+    Akses dataAksesPenggunaBuku(
+            @PathVariable Long id,
+            @PathVariable String idBuku,
+            @PathVariable String kodePengguna
+    ){
+        Akses akses = repoAkses.findById(id).get();
+        Pengguna pengguna = repoPengguna.findPenggunaByKode(kodePengguna).get();
+        Buku buku = repoBuku.findBukuById(idBuku).get();
+        akses.setIdBuku(buku);
         akses.setKodePengguna(pengguna);
         return repoAkses.save(akses);
     }

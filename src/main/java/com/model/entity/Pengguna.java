@@ -39,6 +39,10 @@ public class Pengguna {
     @Column(name = "tanggal_daftar")
     private Date tanggalDaftar;
 
+    @JsonFormat(pattern = "dd-MM-yyyy hh:mm:ss", timezone = "Asia/Bangkok")
+    @Column(name = "tanggal_edit")
+    private Date tanggalEdit;
+
     @JsonIgnore
     @OneToMany(mappedBy = "kodePengguna")
     private Set<Akses> akses = new HashSet<>();
@@ -75,11 +79,51 @@ public class Pengguna {
         this.peranPengguna = peranPengguna;
     }
 
+    public String getJenisKelamin() {
+        return jenisKelamin;
+    }
+
+    public void setJenisKelamin(String jenisKelamin) {
+        this.jenisKelamin = jenisKelamin;
+    }
+
     public String getAlamat() {
         return alamat;
     }
 
     public void setAlamat(String alamat) {
         this.alamat = alamat;
+    }
+
+    public String getKontak() {
+        return kontak;
+    }
+
+    public void setKontak(String kontak) {
+        this.kontak = kontak;
+    }
+
+    public Date getTanggalDaftar() {
+        return tanggalDaftar;
+    }
+
+    public void setTanggalDaftar(Date tanggalDaftar) {
+        this.tanggalDaftar = tanggalDaftar;
+    }
+
+    public Set<Akses> getAkses() {
+        return akses;
+    }
+
+    public void setAkses(Set<Akses> akses) {
+        this.akses = akses;
+    }
+
+    public Date getTanggalEdit() {
+        return tanggalEdit;
+    }
+
+    public void setTanggalEdit(Date tanggalEdit) {
+        this.tanggalEdit = tanggalEdit;
     }
 }

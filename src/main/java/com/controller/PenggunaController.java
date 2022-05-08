@@ -69,13 +69,13 @@ public class PenggunaController {
         }
         return masukan;
     }
-    @PostMapping("/edit/{namaLengkap}")
-    public DefaultResponse<PenggunaDto> edit(@RequestBody PenggunaDto dto, @PathVariable String namaLengkap){
-        Pengguna entity = convertToEntity1(dto);
+    @PostMapping("/edit/{kodePengguna}")
+    public DefaultResponse<PenggunaDto> edit(@RequestBody PenggunaDto dto, @PathVariable String kodePengguna){
+        Pengguna entity = convertToEntity2(dto);
         DefaultResponse<PenggunaDto> masukan = new DefaultResponse<>();
 
-        Optional<Pengguna> nama_lengkap = repoPengguna.findPenggunaByNamaLengkap(namaLengkap);
-        if(nama_lengkap.isPresent()){
+        Optional<Pengguna> kode_pengguna = repoPengguna.findPenggunaByKode(kodePengguna);
+        if(kode_pengguna.isPresent()){
             repoPengguna.save(entity);
             masukan.setMessage("Data diri berhasil diperbaharui");
             masukan.setData(dto);
@@ -108,10 +108,38 @@ public class PenggunaController {
 
     private PenggunaDto convertToDto1(Pengguna entity){
         PenggunaDto dto = new PenggunaDto();
+        dto.setKode(entity.getKodePengguna());
+        dto.setFirstName(entity.getFirstName());
+        dto.setLastName(entity.getLastName());
+        dto.setPeran(entity.getPeranPengguna());
+        dto.setJenisKelamin(entity.getJenisKelamin());
+        dto.setAlamat(entity.getAlamat());
+        dto.setKontak(entity.getKontak());
+        dto.setTanggalDaftar(entity.getTanggalDaftar());
         return dto;
     }
     private Pengguna convertToEntity1(PenggunaDto dto){
         Pengguna entity = new Pengguna();
+        entity.setKodePengguna(dto.getKode());
+        entity.setFirstName(dto.getFirstName());
+        entity.setLastName(dto.getLastName());
+        entity.setPeranPengguna(dto.getPeran());
+        entity.setJenisKelamin(dto.getJenisKelamin());
+        entity.setAlamat(dto.getAlamat());
+        entity.setKontak(dto.getKontak());
+        entity.setTanggalDaftar(new Date());
+        return entity;
+    }
+    private Pengguna convertToEntity2(PenggunaDto dto){
+        Pengguna entity = new Pengguna();
+        entity.setKodePengguna(dto.getKode());
+        entity.setFirstName(dto.getFirstName());
+        entity.setLastName(dto.getLastName());
+        entity.setPeranPengguna(dto.getPeran());
+        entity.setJenisKelamin(dto.getJenisKelamin());
+        entity.setAlamat(dto.getAlamat());
+        entity.setKontak(dto.getKontak());
+        entity.setTanggalEdit(new Date());
         return entity;
     }
 }

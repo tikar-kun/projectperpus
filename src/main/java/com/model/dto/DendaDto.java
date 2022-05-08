@@ -2,8 +2,9 @@ package com.model.dto;
 
 public class DendaDto {
     private String kodeDenda;
-    private int besarDenda;
+    private long besarDenda;
     private String kodeTransaksi;
+    private String kodePengguna;
 
     public String getKodeDenda() {
         return kodeDenda;
@@ -13,11 +14,11 @@ public class DendaDto {
         this.kodeDenda = kodeDenda;
     }
 
-    public int getBesarDenda() {
+    public long getBesarDenda() {
         return besarDenda;
     }
 
-    public void setBesarDenda(int besarDenda) {
+    public void setBesarDenda(long besarDenda) {
         this.besarDenda = besarDenda;
     }
 
@@ -27,5 +28,13 @@ public class DendaDto {
 
     public void setKodeTransaksi(String kodeTransaksi) {
         this.kodeTransaksi = kodeTransaksi;
+    }
+
+    public String getKodePengguna() {
+        return kodePengguna;
+    }
+
+    public void setKodePengguna(String kodePengguna) {
+        this.kodePengguna = kodePengguna;
     }
 }

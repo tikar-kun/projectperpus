@@ -34,6 +34,9 @@ public class Buku {
     @JoinColumn(name = "rak", nullable = false)
     private Rak rak;
 
+    @Column(name = "status")
+    private String status;
+
     public String getIdBuku() {
         return idBuku;
     }
@@ -79,4 +82,6 @@ public class Buku {
     public Rak getRak() {return rak;}
     public void setRak(Rak rak) {this.rak = rak;}
 
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 }

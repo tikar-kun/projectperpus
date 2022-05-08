@@ -1,10 +1,11 @@
 package com.controller;
 
+import com.service.BukuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.model.dto.BukuDto;
-import com.model.dto.DefaultResponse;
+import com.helper.DefaultResponse;
 import com.model.entity.Buku;
 import com.model.entity.Rak;
 import com.repository.BukuRepository;
@@ -19,6 +20,9 @@ import java.util.Optional;
 public class BukuController {
     private final BukuRepository bukuRepository;
     private final RakRepository rakRepository;
+
+    @Autowired
+    private BukuService bukuService;
 
     @Autowired
     public BukuController(BukuRepository bukuRepository, RakRepository rakRepository){
@@ -37,15 +41,19 @@ public class BukuController {
     }
 
     //menambahkan buku
+    //jika id buku sama, maka update
     @PostMapping("/inputbuku")
     public DefaultResponse<BukuDto> savebuku(@RequestBody BukuDto bukuDto){
         Buku buku = convertDtotoEntity(bukuDto);
         DefaultResponse<BukuDto> response = new DefaultResponse<>();
 
         //cek data
-        Optional<Buku> optional = bukuRepository.findById(bukuDto.getJudulBuku());
-        if(optional.isPresent()){
-            response.setMessage("Buku sudah tersedia");
+        Optional<Buku> optional = bukuRepository.findById(bukuDto.getIdBuku());
+
+        if (optional.isPresent()){
+            bukuRepository.save(buku);
+            response.setMessage("Berhasil update data");
+            response.setData(bukuDto);
         } else {
             bukuRepository.save(buku);
             response.setMessage("Berhasil menyimpan");
@@ -54,18 +62,54 @@ public class BukuController {
         return response;
     }
 
-    //mengambil data buku berdasarkan nama
-    @GetMapping("/getbyname/{name}")
-    public DefaultResponse<BukuDto> getByName(@PathVariable String name) {
+//    update status (ada/tidak ada)
+    @PutMapping("/archive/{idBuku}")
+    public DefaultResponse<BukuDto> updateArsip (@PathVariable String idBuku){
         DefaultResponse<BukuDto> response = new DefaultResponse<>();
-        Optional<Buku> optional = bukuRepository.findBukuByName(name);
+        Optional<Buku> optional = bukuRepository.findById(idBuku);
         if(optional.isPresent()){
-            response.setMessage("Buku Ditemukan");
-            response.setData(convertEntitytoDto(optional.get()));
+            bukuService.arsipStatus(idBuku);
+            response.setMessage("buku telah diarsipkan");
+            response.setData(convertEntitytoDto2(optional.get()));
         } else {
-            response.setMessage("Buku Tidak Ditemukan");
+            response.setMessage("id buku salah");
         }
         return response;
+    }
+
+    @PutMapping("/available/{idBuku}")
+    public DefaultResponse<BukuDto> updateAvailable (@PathVariable String idBuku){
+        DefaultResponse<BukuDto> response = new DefaultResponse<>();
+        Optional<Buku> optional = bukuRepository.findById(idBuku);
+
+        if(optional.isPresent()){
+            bukuService.adaStatus(idBuku);
+            response.setMessage("buku telah tersedia");
+            response.setData(convertEntitytoDto3(optional.get()));
+        } else {
+            response.setMessage("id buku salah");
+        }
+        return response;
+    }
+
+    //mengambil data buku berdasarkan nama
+    @GetMapping("/getbyname/{judulBuku}")
+    public List<BukuDto> getListbyJudul(@PathVariable String judulBuku){
+        List<BukuDto> list = new ArrayList<>();
+        for(Buku b: bukuRepository.findByJudulBuku(judulBuku)){
+            list.add(convertEntitytoDto(b));
+        }
+        return list;
+    }
+
+    //mengambil data buku berdasarkan kategori
+    @GetMapping("/getbykategori/{kategori}")
+    public List<BukuDto> getListbyKategori(@PathVariable String kategori) {
+        List<BukuDto> list = new ArrayList<>();
+        for(Buku b: bukuRepository.findAllByNamaKategori(kategori)){
+            list.add(convertEntitytoDto(b));
+        }
+        return list;
     }
 
     //convert Dto ke entity
@@ -79,6 +123,7 @@ public class BukuController {
         buku.setNamaKategori(dto.getNamaKategori());
         buku.setJumlahBuku(dto.getJumlahBuku());
         buku.setStokBuku(dto.getStokBuku());
+        buku.setStatus(dto.getStatus());
 
         if(rakRepository.findById(dto.getIdRak()).isPresent()){
             Rak rak = rakRepository.findById(dto.getIdRak()).get();
@@ -99,6 +144,39 @@ public class BukuController {
         dto.setJumlahBuku(entity.getJumlahBuku());
         dto.setStokBuku(entity.getStokBuku());
         dto.setIdRak(entity.getRak().getIdRak());
+        dto.setStatus(entity.getStatus());
+        return dto;
+    }
+
+    //convert Entity to Dto untuk arsip
+    public BukuDto convertEntitytoDto2(Buku entity) {
+        BukuDto dto = new BukuDto();
+        dto.setIdBuku(entity.getIdBuku());
+        dto.setJudulBuku(entity.getJudulBuku());
+        dto.setPenulisBuku(entity.getPenulisBuku());
+        dto.setPenerbitBuku(entity.getPenerbitBuku());
+        dto.setTahunTerbit(entity.getTahunTerbit());
+        dto.setNamaKategori(entity.getNamaKategori());
+        dto.setJumlahBuku(entity.getJumlahBuku());
+        dto.setStokBuku(entity.getStokBuku());
+        dto.setIdRak(entity.getRak().getIdRak());
+        dto.setStatus("diarsipkan");
+        return dto;
+    }
+
+    //convert Entity to Dto untuk available
+    public BukuDto convertEntitytoDto3(Buku entity) {
+        BukuDto dto = new BukuDto();
+        dto.setIdBuku(entity.getIdBuku());
+        dto.setJudulBuku(entity.getJudulBuku());
+        dto.setPenulisBuku(entity.getPenulisBuku());
+        dto.setPenerbitBuku(entity.getPenerbitBuku());
+        dto.setTahunTerbit(entity.getTahunTerbit());
+        dto.setNamaKategori(entity.getNamaKategori());
+        dto.setJumlahBuku(entity.getJumlahBuku());
+        dto.setStokBuku(entity.getStokBuku());
+        dto.setIdRak(entity.getRak().getIdRak());
+        dto.setStatus("tersedia");
         return dto;
     }
 }

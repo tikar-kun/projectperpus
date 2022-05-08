@@ -9,5 +9,7 @@ import java.util.Optional;
 
 public interface EbookRepository extends JpaRepository<Ebook, String> {
     @Query(value = "select e from Ebook e where e.judulEbook = :ebook", nativeQuery = false)
-    public Optional<Ebook> findEbookByName(@PathParam("ebook") String ebook);
+    Optional<Ebook> findEbookByName(@PathParam("ebook") String ebook);
+    @Query(value = "SELECT e FROM Ebook e WHERE e.idEbook = :id_ebook")
+    Optional<Ebook> findEbookById(@PathParam("id_ebook") String id_ebook);
 }

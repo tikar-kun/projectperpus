@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface TransaksiRepository extends JpaRepository<Transaksi, String> {
-    List<Transaksi> findAllByPenggunaKodePengguna(String kode);
+//    List<Transaksi> findAllByPenggunaKodePengguna(String kode);
 }

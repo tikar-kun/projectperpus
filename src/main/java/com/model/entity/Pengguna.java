@@ -1,10 +1,16 @@
 package com.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.persistence.Table;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name="t-pengguna")
+@Table(name="t_pengguna")
 
 public class Pengguna {
     @Id
@@ -20,8 +26,22 @@ public class Pengguna {
     @Column(name="peran")
     private String peranPengguna;
 
+    @Column(name = "jenis_kelamin")
+    private String jenisKelamin;
+
     @Column(name="alamat")
     private String alamat;
+
+    @Column(name = "kontak", length = 14)
+    private String kontak;
+
+    @JsonFormat(pattern = "dd-MM-yyyy hh:mm:ss", timezone = "Asia/Bangkok")
+    @Column(name = "tanggal_daftar")
+    private Date tanggalDaftar;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "kodePengguna")
+    private Set<Akses> akses = new HashSet<>();
 
     public String getKodePengguna() {
         return kodePengguna;

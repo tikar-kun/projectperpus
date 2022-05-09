@@ -1,26 +1,28 @@
 package com.model.dto;
 
 public class UserDto {
-    private Long id;
-    private String email;
+    private Long idpengguna;
+    private String emailpengguna;
     private String password;
     private String firstName;
     private String lastName;
+    private String peranAs;
 
-    public Long getId() {
-        return id;
+
+    public Long getIdpengguna() {
+        return idpengguna;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setIdpengguna(Long idpengguna) {
+        this.idpengguna = idpengguna;
     }
 
-    public String getEmail() {
-        return email;
+    public String getEmailpengguna() {
+        return emailpengguna;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmailpengguna(String emailpengguna) {
+        this.emailpengguna = emailpengguna;
     }
 
     public String getPassword() {
@@ -45,5 +47,13 @@ public class UserDto {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getPeranAs() {
+        return peranAs;
+    }
+
+    public void setPeranAs(String peranAs) {
+        this.peranAs = peranAs;
     }
 }

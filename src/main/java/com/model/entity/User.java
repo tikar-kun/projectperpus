@@ -6,8 +6,8 @@ import javax.persistence.*;
 @Table (name = "t_register")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    private Long iduser;
 
     @Column(nullable = false, unique = true, length = 45)
     private String email;
@@ -20,16 +20,16 @@ public class User {
 
     @Column(name = "last_name", nullable = false, length = 20)
     private String lastName;
-    @ManyToOne
-    @JoinColumn(name = "kode_role")
-    private Role kdrole;
 
-    public Long getId() {
-        return id;
+    @Column(name = "role", nullable = false, length = 6)
+    private String roleas;
+
+    public Long getIduser() {
+        return iduser;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setIduser(Long iduser) {
+        this.iduser = iduser;
     }
 
     public String getEmail() {
@@ -64,11 +64,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public Role getKdrole() {
-        return kdrole;
+    public String getRoleas() {
+        return roleas;
     }
 
-    public void setKdrole(Role kdrole) {
-        this.kdrole = kdrole;
+    public void setRoleas(String roleas) {
+        this.roleas = roleas;
     }
 }

@@ -10,24 +10,22 @@ import javax.persistence.Table;
 @Table(name = "t_privilege")
 public class Privilege {
     @Id
-    @Column(name = "id_privilege", nullable = false)
-    private Integer id;
-    @Column(name = "privilege", nullable = false)
-    private String priv;
+    private Long idpriv;
+    private String name;
 
-    public Integer getId() {
-        return id;
+    public Long getId() {
+        return idpriv;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setId(Long idpriv) {
+        this.idpriv = idpriv;
     }
 
-    public String getPriv() {
-        return priv;
+    public String getName() {
+        return name;
     }
 
-    public void setPriv(String priv) {
-        this.priv = priv;
+    public void setName(String name) {
+        this.name = name;
     }
 }

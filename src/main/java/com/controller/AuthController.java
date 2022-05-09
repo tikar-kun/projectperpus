@@ -6,102 +6,91 @@ import com.helpers.LoginResponse;
 import com.model.dto.LoginDto;
 import com.model.dto.RoleDto;
 import com.model.dto.UserDto;
+import com.model.entity.Role;
 import com.model.entity.User;
+import com.repository.RoleRepository;
 import com.repository.UserRepository;
+import com.service.RoleService;
+import com.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping ("/auth")
 public class AuthController {
+    @Autowired
+    public RoleService roleService;
+
+    @Autowired
+    public UserService userService;
+
     //==convertDtoToEntity
     public User convertDtoToEntity (UserDto userDto){
         User user= new User();
-        user.setId(userDto.getId());
-        user.setEmail(userDto.getEmail());
+        user.setIduser(userDto.getIdpengguna());
+        user.setEmail(userDto.getEmailpengguna());
+        user.setPassword(userDto.getPassword());
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
+        user.setRoleas(userDto.getPeranAs());
         return user;
     }
 
-    public User convertDtoLoginToEntity (LoginDto loginDto){
-        User user = new User();
-        user.setId(loginDto.getId());
-        user.setEmail(loginDto.getEmaillogin());
-        return  user;
-    }
 
     //==convertEntityToDto
      public UserDto convertEntityToDto ( User userEntity){
-        UserDto userdto= new UserDto();
-        userdto.setId(userEntity.getId());
-        userdto.setEmail(userEntity.getEmail());
-        userdto.setFirstName(userEntity.getFirstName());
-        userdto.setLastName(userEntity.getLastName());
-        return userdto;
+         UserDto userdto= new UserDto();
+         userdto.setIdpengguna(userEntity.getIduser());
+         userdto.setEmailpengguna(userEntity.getEmail());
+         userdto.setFirstName(userEntity.getFirstName());
+         userdto.setLastName(userEntity.getLastName());
+         userdto.setPassword(userEntity.getPassword());
+         return userdto;
     }
 
-    //Injek repository
-    @Autowired
-    public UserRepository userRepository;
+
+
 
     //create date user
     @PostMapping("/register")
-    public DefaultResponse<UserDto> read(@RequestBody UserDto userDto){
-        User user = convertDtoToEntity(userDto);
-        DefaultResponse<UserDto> response = new DefaultResponse<>();
-        Optional<User> optional = Optional.ofNullable(userRepository.findByEmail(userDto.getEmail()));
-        if(optional.isPresent()){
-            response.setMessage("Error, email sudah ada");
+    public DefaultResponse read(@RequestBody UserDto userdto){
+        User user = convertDtoToEntity(userdto);
+        DefaultResponse <UserDto> response = new DefaultResponse<>();
+        Optional<User> op = userService.findByEmail(userdto.getEmailpengguna());
+        if (op.isPresent()) {
+            response.setMessage("Error, email sudah terdaftar");
         } else {
-            userRepository.save(user);
-            response.setMessage("Berhasil Daftar");
-            response.setData(userDto);
+            Optional<Role> peran = roleService.findByRoleIgnoreCase(userdto.getPeranAs());
+            if (peran.isPresent()){
+                userService.registUser(user);
+                response.setMessage("Berhasil daftar, silahkan Sign in");
+                response.setData(userdto);
+            } else {
+                response.setMessage("Peran tidak tersedia. Daftar sebagai admin atau member");
+            }
         }
-
         return response;
     }
 
-    @PostMapping("/login")
-    public LoginResponse<LoginDto> masuk(@RequestBody LoginDto loginDto) {
-        User user = convertDtoLoginToEntity(loginDto);
-        LoginResponse<LoginDto> resp = new LoginResponse<>();
-        Optional<User> optional = Optional.ofNullable(userRepository.findByEmail(loginDto.getEmaillogin()));
-        if (optional.isPresent()) {
-            resp.setPesan("Error, email tidak terdaftar");
-        } else {
-            resp.setPesan("Welcome" + user.getFirstName());
-        }
+    @GetMapping("/list")
+    public List<UserDto> getList(){
+        List<User> userlist = userService.findAll();
+        List<UserDto> userdtolist = userlist.stream().map(this::convertEntityToDto).collect(Collectors.toList());
+        return userdtolist;
+    }
 
+    @PostMapping("/login")
+    public LoginResponse masuk(@RequestBody LoginDto loginDto) {
+        LoginResponse resp = new LoginResponse();
+        Optional<User> optional = userService.findByPasswordAndEmail(loginDto.getPassword(), loginDto.getEmaillogin());
+        if (optional.isPresent()) {
+            resp.setPesan("Berhasil login");
+        } else {
+            resp.setPesan("Email atau Password salah");
+        }
         return resp;
     }
-
-    @GetMapping("/list-role")
-    public List<RoleDto> listRole(){
-        List<RoleDto> listR = new ArrayList<>();
-        RoleDto r1 = new RoleDto();
-        r1.setPeran("Pengunjung");
-        listR.add(r1);
-
-        RoleDto r2 = new RoleDto();
-        r2.setPeran("Member");
-        listR.add(r2);
-
-        RoleDto r3 = new RoleDto();
-        r3.setPeran("Pengunjung");
-        listR.add(r3);
-
-        return  listR;
-    }
-
-
-
-
-
-
-
 }

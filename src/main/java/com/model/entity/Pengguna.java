@@ -101,43 +101,43 @@ public class Pengguna {
     }
 
 
-    public Transaksi getKodeTransaksi() {
-        return kodeTransaksi;
-    }
-
-    public void setKodeTransaksi(Transaksi kodeTransaksi) {
-        this.kodeTransaksi = kodeTransaksi;
-
-    public String getKontak() {
-        return kontak;
-    }
-
-    public void setKontak(String kontak) {
-        this.kontak = kontak;
-    }
-
-    public Date getTanggalDaftar() {
-        return tanggalDaftar;
-    }
-
-    public void setTanggalDaftar(Date tanggalDaftar) {
-        this.tanggalDaftar = tanggalDaftar;
-    }
-
-    public Set<Akses> getAkses() {
-        return akses;
-    }
-
-    public void setAkses(Set<Akses> akses) {
-        this.akses = akses;
-    }
-
-    public Date getTanggalEdit() {
-        return tanggalEdit;
-    }
-
-    public void setTanggalEdit(Date tanggalEdit) {
-        this.tanggalEdit = tanggalEdit;
-
-    }
+//    public Transaksi getKodeTransaksi() {
+//        return kodeTransaksi;
+//    }
+//
+//    public void setKodeTransaksi(Transaksi kodeTransaksi) {
+//        this.kodeTransaksi = kodeTransaksi;
+//
+//    public String getKontak() {
+//        return kontak;
+//    }
+//
+//    public void setKontak(String kontak) {
+//        this.kontak = kontak;
+//    }
+//
+//    public Date getTanggalDaftar() {
+//        return tanggalDaftar;
+//    }
+//
+//    public void setTanggalDaftar(Date tanggalDaftar) {
+//        this.tanggalDaftar = tanggalDaftar;
+//    }
+//
+//    public Set<Akses> getAkses() {
+//        return akses;
+//    }
+//
+//    public void setAkses(Set<Akses> akses) {
+//        this.akses = akses;
+//    }
+//
+//    public Date getTanggalEdit() {
+//        return tanggalEdit;
+//    }
+//
+//    public void setTanggalEdit(Date tanggalEdit) {
+//        this.tanggalEdit = tanggalEdit;
+//
+//    }
 }

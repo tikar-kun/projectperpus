@@ -41,6 +41,8 @@ public class Buku {
     @JoinColumn(name = "kode_transaksi", nullable = false)
     private Transaksi kodeTransaksi;
 
+    @Column(name = "status")
+    private String status;
 
     @JsonIgnore
     @OneToMany(mappedBy = "idBuku")

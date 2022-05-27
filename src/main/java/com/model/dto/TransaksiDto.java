@@ -3,22 +3,21 @@ package com.model.dto;
 import java.util.Date;
 
 public class TransaksiDto {
-    private String kode;
+    private String kodeTransaksi;
     private Date tanggalPinjam;
     private Date tanggalKembali;
     private String kodePengguna;
 
     private String kodeBuku;
     private String kodeDenda;
-    private Integer besarDenda;
 
 
-    public String getKode() {
-        return kode;
+    public String getKodeTransaksi() {
+        return kodeTransaksi;
     }
 
-    public void setKode(String kode) {
-        this.kode = kode;
+    public void setKodeTransaksi(String kodeTransaksi) {
+        this.kodeTransaksi = kodeTransaksi;
     }
 
     public String getKodePengguna() {
@@ -60,13 +59,5 @@ public class TransaksiDto {
 
     public void setKodeDenda(String kodeDenda) {
         this.kodeDenda = kodeDenda;
-    }
-
-    public Integer getBesarDenda() {
-        return besarDenda;
-    }
-
-    public void setBesarDenda(Integer besarDenda) {
-        this.besarDenda = besarDenda;
     }
 }

@@ -1,6 +1,8 @@
 package com.controller;
 
-import com.model.dto.DefaultResponse;
+import com.helpers.DefaultResponse;
+import com.model.dto.BukuDto;
+import com.model.dto.DendaDto;
 import com.model.dto.TransaksiDto;
 import com.model.entity.Buku;
 import com.model.entity.Denda;
@@ -11,11 +13,12 @@ import com.repository.DendaRepository;
 import com.repository.PenggunaRepository;
 import com.repository.TransaksiRepository;
 import com.service.AuditLogService;
+import com.service.BukuService;
 import com.service.TransaksiService;
-import com.service.TransaksiServicelmpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,9 +33,11 @@ public class TransaksiController {
     private final BukuRepository bukuRepository;
     private final DendaRepository dendaRepository;
     private final AuditLogService auditLogSerice;
+
+
     @Autowired
     private TransaksiService transaksiService;
-    @Autowired
+    private BukuService bukuService;
     public TransaksiController(BukuRepository bukuRepository, DendaRepository dendaRepository,
                                PenggunaRepository penggunaRepository, TransaksiRepository transaksiRepository, AuditLogService auditLogSerice) {
         this.penggunaRepository = penggunaRepository;
@@ -46,7 +51,7 @@ public class TransaksiController {
     // convert dto to entity
     public Transaksi convertDtoToEntity (TransaksiDto transaksiDto){
         Transaksi transaksi = new Transaksi();
-        transaksi.setKodeTransaksi(transaksiDto.getKode());
+        transaksi.setKodeTransaksi(transaksiDto.getKodeTransaksi());
         transaksi.setTanggalPinjam(transaksiDto.getTanggalPinjam());
         transaksi.setTanggalKembali(transaksiDto.getTanggalKembali());
         if(penggunaRepository.findById(transaksiDto.getKodePengguna()).isPresent()){
@@ -64,13 +69,20 @@ public class TransaksiController {
         return transaksi;
     }
 
+    public Transaksi convertDtoToEntity2 (TransaksiDto transaksiDto) {
+        Transaksi transaksi = new Transaksi();
+        transaksi.setKodeTransaksi(transaksiDto.getKodeTransaksi());
+        transaksi.setTanggalPinjam(transaksiDto.getTanggalPinjam());
+        transaksi.setTanggalKembali(transaksiDto.getTanggalKembali());
+        return transaksi;
+    }
+
     // convert to dto
     private TransaksiDto convertEntityToDto(Transaksi transaksi){
         TransaksiDto dto = new TransaksiDto();
-        dto.setKode(transaksi.getKodeTransaksi());
+        dto.setKodeTransaksi(transaksi.getKodeTransaksi());
         dto.setTanggalPinjam(transaksi.getTanggalPinjam());
         dto.setTanggalKembali(transaksi.getTanggalKembali());
-        dto.setKodeDenda(transaksi.getKodeDenda().getKodeDenda());
         return dto;
     }
 
@@ -82,6 +94,16 @@ public class TransaksiController {
             return transaksiDto;
         }
         return null;
+    }
+    @GetMapping("/list/pinjam/{tanggalPinjam}")
+    public List<TransaksiDto> getListbyJudul(@PathVariable String tanggalPinjam) throws ParseException {
+        List<TransaksiDto> list = new ArrayList<>();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+        Date tanggal = format.parse(tanggalPinjam);
+        for(Transaksi t: transaksiRepository.findByTanggalPinjam(tanggal)){
+            list.add(convertEntityToDto(t));
+        }
+        return list;
     }
     //keseluruhan transaksi
 
@@ -96,58 +118,71 @@ public class TransaksiController {
 
     @PostMapping("/pinjam")
     public DefaultResponse<TransaksiDto> savepinjam(@RequestBody TransaksiDto transaksiDto){
-        Transaksi transaksi = convertDtoToEntity(transaksiDto);
+        Transaksi transaksi = convertDtoToEntity2(transaksiDto);
+        Buku buku = bukuRepository.findByIdBuku(transaksiDto.getKodeBuku());
+
         DefaultResponse<TransaksiDto> response = new DefaultResponse<>();
-        SimpleDateFormat format = new SimpleDateFormat("dd/mm/yyyy");
         //cek
-
-
-        Optional<Pengguna> optional = penggunaRepository.findById(transaksiDto.getKodePengguna());
-        if(optional.isPresent()){
-            auditLogSerice.writeLog("pengguna ditemukan");
-            Optional<Buku> optionalBuku = bukuRepository.findById(transaksiDto.getKodeBuku());
-            if(optionalBuku.isPresent()){
-                auditLogSerice.writeLog("buku ditemukan");
-                transaksiRepository.save(transaksi);
-                auditLogSerice.writeLog("peminjaman berhasil");
-                response.setData(transaksiDto);
-
-            } else {
-                auditLogSerice.writeLog("buku tidak ditemukan");
-            }
+        Optional<Pengguna> optional = penggunaRepository.findPenggunaByKode(transaksiDto.getKodePengguna());
+        Optional<Buku> optionalBuku = bukuRepository.findBukuById(transaksiDto.getKodeBuku());
+        Optional<Transaksi> optionalTrans = transaksiRepository.findById(transaksiDto.getKodeTransaksi());
+        if(optionalTrans.isPresent()){
+            response.setMessage("transaksi sudah ada, mohon input transaksi baru");
         } else {
-            auditLogSerice.writeLog("pengguna tidak ditemukan");
+            if(optional.isPresent() && optionalBuku.isPresent()){
+                if(buku.getStokBuku()>0){
+                    transaksiRepository.save(transaksi);
+                    buku.setStokBuku(buku.getStokBuku()-1);
+                    bukuRepository.save(buku);
+//                bukuService.bukuPinjam(transaksiDto.getKodeBuku());
+                    response.setMessage("peminjaman berhasil");
+                    response.setData(transaksiDto);
+                }
+            } else {
+                response.setMessage("pengguna tidak ditemukan");
+            }
         }
+
         return response;
     }
 
     @PostMapping("/kembali")
-    public DefaultResponse<TransaksiDto> savekembali(@RequestBody TransaksiDto transaksiDto){
-        Transaksi transaksi = convertDtoToEntity(transaksiDto);
+    public DefaultResponse<TransaksiDto> savekembali(@RequestBody TransaksiDto transaksiDto) {
+        Transaksi transaksi = convertDtoToEntity2(transaksiDto);
+        Buku buku = bukuRepository.findByIdBuku(transaksiDto.getKodeBuku());
+        Denda denda = dendaRepository.findByKodeDenda(transaksiDto.getKodeDenda());
         DefaultResponse<TransaksiDto> response = new DefaultResponse<>();
-        SimpleDateFormat format = new SimpleDateFormat("dd/mm/yyyy");
         //cek
-        Optional<Transaksi> optional = transaksiRepository.findById(transaksiDto.getKode());
-        if(optional.isPresent()){
-            auditLogSerice.writeLog("transaksi ditemukan");
+        Optional<Transaksi> optional = transaksiRepository.findById(transaksiDto.getKodeTransaksi());
+        if (optional.isPresent()) {
             transaksiRepository.save(transaksi);
-            long sel = transaksiService.selisihHari(transaksi);
-            if(sel > 3){
-                auditLogSerice.writeLog("Anda telat mengembalikan selama"+sel);
-                transaksiService.insertDataTransaksi(transaksi);
-            }
-
             response.setData(transaksiDto);
+            buku.setStokBuku(buku.getStokBuku()+1);
+            bukuRepository.save(buku);
+//            bukuService.bukuKembali(transaksiDto.getKodeBuku());
+            long sel = transaksiService.selisihHari(transaksi, transaksiDto.getKodeTransaksi());
+            if (sel > 3) {
+                Long dendat = transaksiService.besarDenda(sel);
+                denda.setTelat(sel-3);
+                denda.setBesarDenda(dendat);
+                dendaRepository.save(denda);
+                response.setMessage("Anda telat mengembalikan selama " + (sel-3) +" hari, "+ "besar denda yang harus dibayar = Rp. " + dendat);
+            } else {
+                response.setMessage("terima kasih telah mengembalikan buku tepat waktu");
+            }
         } else {
-            auditLogSerice.writeLog("transaksi tidak ditemukan");
-        }
-        return response;
+            response.setMessage("transaksi tidak ditemukan");
+        }    return response;
     }
-
-    @PostMapping
+    @PostMapping("/insert")
         public TransaksiDto insert(@RequestBody TransaksiDto dto){
-            Transaksi transaksi = convertDtoToEntity(dto);
+            Transaksi transaksi = convertDtoToEntity2(dto);
             transaksiRepository.save(transaksi);
             return convertEntityToDto(transaksi);
     }
+
+//    @PostMapping("/bayar")
+//    public
 }
+//         response.setData(transaksiDto);
+

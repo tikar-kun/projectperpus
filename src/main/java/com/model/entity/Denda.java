@@ -6,18 +6,15 @@ import javax.persistence.*;
 @Table (name = "t_denda")
 public class Denda {
     @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column (name = "kode_denda")
     private String kodeDenda;
 
+    @Column (name = "jumlah_hari_terlambat")
+    private Long telat;
     @Column (name = "besar_denda")
-    private long besarDenda;
+    private Long besarDenda;
 
-    @OneToOne
-    @JoinColumn (name = "kode_transaksi")
-    private Transaksi kodeTransaksi;
-    @ManyToOne
-    @JoinColumn
-    private Pengguna kodePengguna;
 
     public String getKodeDenda() {
         return kodeDenda;
@@ -26,27 +23,21 @@ public class Denda {
     public void setKodeDenda(String kodeDenda) {
         this.kodeDenda = kodeDenda;
     }
-    public long getBesarDenda() {
+    public Long getBesarDenda() {
         return this.besarDenda;
     }
 
-    public void setBesarDenda(long besarDenda) {
+    public void setBesarDenda(Long besarDenda) {
         this.besarDenda = besarDenda;
     }
 
-    public Transaksi getKodeTransaksi() {
-        return kodeTransaksi;
+    public Long getTelat() {
+        return telat;
     }
 
-    public void setKodeTransaksi(Transaksi kodeTransaksi) {
-        this.kodeTransaksi = kodeTransaksi;
+    public void setTelat(Long telat) {
+        this.telat = telat;
     }
 
-    public Pengguna getKodePengguna() {
-        return kodePengguna;
-    }
 
-    public void setKodePengguna(Pengguna kodePengguna) {
-        this.kodePengguna = kodePengguna;
-    }
 }

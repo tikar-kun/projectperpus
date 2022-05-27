@@ -1,31 +1,28 @@
 package com.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "t_transaksi")
 public class Transaksi {
     @Id
-    @Column(name = "kode_transaksi")
+    @Column(name = "kode_transaksi", length = 25)
     private String kodeTransaksi;
 
+    @JsonFormat(pattern = "dd-MM-yyyy hh:mm:ss", timezone = "Asia/Bangkok")
     @Column(name = "tanggal_pinjam")
     private Date tanggalPinjam;
+    @JsonFormat(pattern = "dd-MM-yyyy hh:mm:ss", timezone = "Asia/Bangkok")
     @Column(name = "tanggal_kembali")
    private Date tanggalKembali;
-    @OneToOne
-    @JoinColumn (name = "kode_denda", nullable = false)
-    private Denda kodeDenda;
 
-    public Denda getKodeDenda() {
-        return kodeDenda;
-    }
-
-    public void setKodeDenda(Denda kodeDenda) {
-        this.kodeDenda = kodeDenda;
-    }
 
     public String getKodeTransaksi() {
         return kodeTransaksi;

@@ -14,27 +14,23 @@ import java.util.Set;
 
 public class Pengguna {
     @Id
-    @Column(name="kd_pengguna", length = 25)
+    @Column(name = "kd_pengguna", length = 25)
     private String kodePengguna;
 
-    @Column(name="nama_depan")
+    @Column(name = "nama_depan")
     private String firstName;
 
     @Column(name = "nama_belakang")
     private String lastName;
 
-    @Column(name="peran")
+    @Column(name = "peran")
     private String peranPengguna;
 
     @Column(name = "jenis_kelamin")
     private String jenisKelamin;
 
-    @Column(name="alamat")
+    @Column(name = "alamat")
     private String alamat;
-
-    @ManyToOne
-    @JoinColumn (name = "kode_transaksi", nullable = false)
-    private Transaksi kodeTransaksi;
 
     @Column(name = "kontak", length = 14)
     private String kontak;
@@ -100,14 +96,6 @@ public class Pengguna {
         this.alamat = alamat;
     }
 
-
-    public Transaksi getKodeTransaksi() {
-        return kodeTransaksi;
-    }
-
-    public void setKodeTransaksi(Transaksi kodeTransaksi) {
-        this.kodeTransaksi = kodeTransaksi;
-
     public String getKontak() {
         return kontak;
     }
@@ -124,20 +112,13 @@ public class Pengguna {
         this.tanggalDaftar = tanggalDaftar;
     }
 
-    public Set<Akses> getAkses() {
-        return akses;
-    }
-
-    public void setAkses(Set<Akses> akses) {
-        this.akses = akses;
-    }
-
     public Date getTanggalEdit() {
         return tanggalEdit;
     }
 
     public void setTanggalEdit(Date tanggalEdit) {
         this.tanggalEdit = tanggalEdit;
-
     }
+
+
 }

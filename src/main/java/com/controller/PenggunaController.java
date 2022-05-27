@@ -2,14 +2,8 @@ package com.controller;
 
 import com.helpers.DefaultResponse;
 import com.model.dto.PenggunaDto;
-import com.model.entity.Akses;
-import com.model.entity.Buku;
-import com.model.entity.Ebook;
-import com.model.entity.Pengguna;
-import com.repository.AksesRepository;
-import com.repository.BukuRepository;
-import com.repository.EbookRepository;
-import com.repository.PenggunaRepository;
+import com.model.entity.*;
+import com.repository.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -27,12 +21,14 @@ public class PenggunaController {
     final
     AksesRepository repoAkses;
     final BukuRepository repoBuku;
+    final TransaksiRepository transaksiRepository;
 
-    public PenggunaController(EbookRepository repoEbook, PenggunaRepository repoPengguna, AksesRepository repoAkses, BukuRepository repoBuku) {
+    public PenggunaController(EbookRepository repoEbook, PenggunaRepository repoPengguna, AksesRepository repoAkses, BukuRepository repoBuku, TransaksiRepository transaksiRepository) {
         this.repoEbook = repoEbook;
         this.repoPengguna = repoPengguna;
         this.repoAkses = repoAkses;
         this.repoBuku = repoBuku;
+        this.transaksiRepository = transaksiRepository;
     }
 
     @GetMapping

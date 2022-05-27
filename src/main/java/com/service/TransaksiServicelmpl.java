@@ -9,8 +9,8 @@ import com.repository.TransaksiRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Optional;
 import javax.transaction.Transactional;
 
 @Service
@@ -21,28 +21,32 @@ public class TransaksiServicelmpl implements TransaksiService{
     private DendaRepository dendaRepository;
     private DendaDto dendaDto;
     private DendaController dendaController;
+
+
     @Override
     public Transaksi insertDataTransaksi(Transaksi transaksi) {
-        Denda denda = dendaController.convertDtoToEntity(dendaDto);
-        Transaksi entity = transaksiRepository.save(transaksi);
-        SimpleDateFormat format = new SimpleDateFormat("dd/mm/yyyy");
-        Date pinjam = entity.getTanggalPinjam();
-        Date kembali = entity.getTanggalKembali();
-        long diff = kembali.getTime()-pinjam.getTime();
-        long diffDays = diff/(24*60*60*1000);
-        long besarDenda = 3000*diffDays;
-        denda.setBesarDenda(besarDenda);
-        return transaksiRepository.save(entity);
+        return null;
     }
 
-    public long selisihHari(Transaksi transaksi){
-        Transaksi entity = transaksiRepository.save(transaksi);
-        Date pinjam = entity.getTanggalPinjam();
-        Date kembali = entity.getTanggalKembali();
-        long diff = kembali.getTime()- pinjam.getTime();
-        long diffDays = diff-3/(24*60*60*1000);
-        return diffDays;
+    @Override
+    public long selisihHari(Transaksi transaksi, String kodeTransaksi) {
+        Transaksi transaksi1 = transaksiRepository.findByKodeTransaksi(kodeTransaksi);
+    if(transaksi1==null){
+        throw new RuntimeException("kode transaksi tidak ditemukan");
+    }
+     Date pinjam = transaksi1.getTanggalPinjam();
+     Date kembali = transaksi1.getTanggalKembali();
+     long diff = kembali.getTime()- pinjam.getTime();
+     long diffDays = (diff/(24*60*60*1000));
+     return diffDays;
     }
 
-
+    @Override
+    public long besarDenda(long telat) {
+        long besarDenda = 3000*(telat-3);
+        return besarDenda;
+    }
 }
+//        Transaksi entity = transaksiRepository.getById(transaksidto.getKodePengguna());
+//        Date pinjam = transaksidto.getTanggalPinjam();
+//        Date kembali = transaksidto.getTanggalKembali();

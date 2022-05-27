@@ -1,5 +1,7 @@
 package com.controller;
 
+import com.model.entity.Transaksi;
+import com.repository.TransaksiRepository;
 import com.service.BukuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,14 +22,16 @@ import java.util.Optional;
 public class BukuController {
     private final BukuRepository bukuRepository;
     private final RakRepository rakRepository;
+    private final TransaksiRepository transaksiRepository;
 
     @Autowired
     private BukuService bukuService;
 
     @Autowired
-    public BukuController(BukuRepository bukuRepository, RakRepository rakRepository){
+    public BukuController(BukuRepository bukuRepository, RakRepository rakRepository, TransaksiRepository transaksiRepository){
         this.bukuRepository = bukuRepository;
         this.rakRepository = rakRepository;
+        this.transaksiRepository = transaksiRepository;
     }
 
     //melihat list seluruh buku
@@ -129,6 +133,9 @@ public class BukuController {
             Rak rak = rakRepository.findById(dto.getIdRak()).get();
             buku.setRak(rak);
         }
+//        if(transaksiRepository.findById(dto.getKodeTransaksi()).isEmpty()){
+//            ;
+//        }
         return buku;
     }
 

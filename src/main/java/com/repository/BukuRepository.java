@@ -2,11 +2,13 @@ package com.repository;
 
 import com.model.entity.Buku;
 import com.model.entity.Ebook;
+import com.model.entity.Transaksi;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-
+import javax.websocket.server.PathParam;
 import java.util.List;
+import java.util.Optional;
 
 public interface BukuRepository extends JpaRepository<Buku, String> {
 
@@ -27,6 +29,7 @@ public interface BukuRepository extends JpaRepository<Buku, String> {
     @Modifying
     @Query("UPDATE Buku b SET b.status = 'tersedia' WHERE b.idBuku =:idBuku")
     int adaBuku(String idBuku);
+    public Buku findByIdBuku (String idBuku);
 
 
 }

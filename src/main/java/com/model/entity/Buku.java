@@ -37,14 +37,13 @@ public class Buku {
     @ManyToOne
     @JoinColumn(name = "rak", nullable = false)
     private Rak rak;
-    @ManyToOne
-    @JoinColumn(name = "kode_transaksi", nullable = false)
-    private Transaksi kodeTransaksi;
-
 
     @JsonIgnore
     @OneToMany(mappedBy = "idBuku")
     private Set<Akses> akses = new HashSet<>();
+
+    @Column(name = "status")
+    private String status;
 
     public String getIdBuku() {
         return idBuku;
@@ -93,4 +92,5 @@ public class Buku {
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+
 }

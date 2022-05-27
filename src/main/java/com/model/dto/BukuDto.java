@@ -12,7 +12,6 @@ public class BukuDto {
     private String idRak;
 
     private String lokasiRak;
-    private String kodeTransaksi;
 
     private String status;
 
@@ -61,17 +60,14 @@ public class BukuDto {
 
     public String getIdRak() { return idRak; }
     public void setIdRak(String idRak) { this.idRak = idRak; }
-
-
-    public String getKodeTransaksi() {
-        return kodeTransaksi;
-    }
-
-    public void setKodeTransaksi(String kodeTransaksi) {
-        this.kodeTransaksi = kodeTransaksi;
-    }
-
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status;}
 
+    public String getLokasiRak() {
+        return lokasiRak;
+    }
+
+    public void setLokasiRak(String lokasiRak) {
+        this.lokasiRak = lokasiRak;
+    }
 }
